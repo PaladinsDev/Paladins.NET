@@ -13,17 +13,17 @@
     <PackageIcon>45591783.png</PackageIcon>
     <NeutralLanguage></NeutralLanguage>
     <Description>Paladins.Net is a package that helps Hi-Rez/Paladins developers communicate with the API.</Description>
+    <PackageLicenseFile>LICENSE</PackageLicenseFile>
   </PropertyGroup>
 
   <ItemGroup>
-    <None Include="C:\Users\matth\Pictures\45591783.png" Link="assets\45591783.png">
+    <Compile Remove="assets\**" />
+    <EmbeddedResource Remove="assets\**" />
+    <None Remove="assets\**" />
+    <None Include="..\LICENSE">
       <Pack>True</Pack>
       <PackagePath></PackagePath>
     </None>
-  </ItemGroup>
-
-  <ItemGroup>
-    <Folder Include="assets\" />
   </ItemGroup>
 
 </Project>
