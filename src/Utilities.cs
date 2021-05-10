@@ -2,7 +2,7 @@
 
 namespace Paladins.Net
 {
-    public class Utilities
+    public static class Utilities
     {
         public static Platform ParsePlatform(string platform)
         {
