@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-
-namespace Paladins.Net.Enumerations
+﻿namespace Paladins.Net.Enumerations
 {
     public enum Platform
     {
