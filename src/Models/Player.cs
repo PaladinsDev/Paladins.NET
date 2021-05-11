@@ -24,8 +24,8 @@ namespace Paladins.Net.Models
         public uint TotalAchievements { get; set; }
         public uint TotalExperience { get; set; }
         public CasualPlayerStats Casual { get; set; }
-        public RankedPlayerStats? RankedKeyboard { get; set; }
-        public RankedPlayerStats? RankedController { get; set; }
+        public RankedPlayerStats RankedKeyboard { get; set; }
+        public RankedPlayerStats RankedController { get; set; }
     }
 
     public class PlayerAvatar : IModel
