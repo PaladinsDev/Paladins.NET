@@ -31,4 +31,10 @@
         Master = 26,
         Grandmaster = 27,
     }
+
+    public enum RankedMode
+    {
+        Keyboard,
+        Controller
+    }
 }
