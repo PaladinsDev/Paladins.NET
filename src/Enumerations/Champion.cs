@@ -51,4 +51,13 @@
         Ying = 2267,
         Zhin = 2420,
     }
+    public enum ChampionRole
+    {
+        FrontLine,
+        Damage,
+        Flank,
+        Support,
+        Tank = FrontLine,
+        Healer = Support,
+    }
 }
