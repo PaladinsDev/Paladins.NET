@@ -1,4 +1,5 @@
 ﻿using Paladins.Net.Enumerations;
+using Paladins.Net.Interfaces;
 
 namespace Paladins.Net.Models
 {

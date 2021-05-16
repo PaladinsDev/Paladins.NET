@@ -1,4 +1,4 @@
-﻿namespace Paladins.Net.Models
+﻿namespace Paladins.Net.Interfaces
 {
     public interface IModel
     {
