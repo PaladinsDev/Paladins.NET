@@ -14,11 +14,11 @@ namespace Paladins.Net.Models
         private AbilityType _damageType;
         public AbilityType DamageType
         {
-            get => _damageType;
+            get => this._damageType;
 
             set
             {
-                _damageType = value.ToString().ToLower() switch
+                this._damageType = value.ToString().ToLower() switch
                 {
                     "aoe" => AbilityType.AoE,
                     "direct" => AbilityType.Direct_Damage,
