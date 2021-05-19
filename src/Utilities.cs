@@ -4,6 +4,8 @@ namespace Paladins.Net
 {
     public static class Utilities
     {
+        // TODO: GetChampion method
+        // TODO: Create/Make web request
         public static Platform ParsePlatform(string platform)
         {
             switch (platform.ToLower())

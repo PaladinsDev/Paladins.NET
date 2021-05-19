@@ -20,10 +20,10 @@
     <Compile Remove="assets\**" />
     <EmbeddedResource Remove="assets\**" />
     <None Remove="assets\**" />
-    <None Include="..\LICENSE">
-      <Pack>True</Pack>
-      <PackagePath></PackagePath>
-    </None>
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="System.Net.Http.Json" Version="5.0.0" />
   </ItemGroup>
 
 </Project>
