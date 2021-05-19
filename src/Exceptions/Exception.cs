@@ -8,4 +8,5 @@ namespace Paladins.Net.Exceptions
     public class Unauthorized : Exception { }
     public class Unavailable : Exception { }
     public class DailyLimitReached : Exception { }
+    public class InvalidSession : Exception { };
 }
