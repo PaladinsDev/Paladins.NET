@@ -1,4 +1,4 @@
-<Project Sdk="Microsoft.NET.Sdk">
+﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
     <TargetFramework>netcoreapp3.1</TargetFramework>
@@ -10,16 +10,18 @@
     <RepositoryType>Git</RepositoryType>
     <PackageTags>Paladins,HiRez,Hi-Rez Studios,PaladinsDev,Paladins API</PackageTags>
     <RepositoryUrl>https://github.com/PaladinsDev/Paladins.Net</RepositoryUrl>
-    <PackageIcon>45591783.png</PackageIcon>
+    <PackageIcon>icon.png</PackageIcon>
     <NeutralLanguage></NeutralLanguage>
     <Description>Paladins.Net is a package that helps Hi-Rez/Paladins developers communicate with the API.</Description>
-    <PackageLicenseFile>LICENSE</PackageLicenseFile>
+    <PackageLicenseFile>LICENSE.txt</PackageLicenseFile>
   </PropertyGroup>
 
   <ItemGroup>
     <Compile Remove="assets\**" />
     <EmbeddedResource Remove="assets\**" />
     <None Remove="assets\**" />
+    <None Include="..\LICENSE.txt" Pack="true" PackagePath="$(PackageLicenseFile)"/>
+    <None Include="..\assets\icon.png" Pack="true" PackagePath=""/>
   </ItemGroup>
 
   <ItemGroup>

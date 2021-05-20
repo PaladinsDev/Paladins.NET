@@ -9,11 +9,10 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution 
 	ProjectSection(SolutionItems) = preProject
 		.editorconfig = .editorconfig
 		.gitignore = .gitignore
-		LICENSE = LICENSE
 		README.md = README.md
 	EndProjectSection
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Paladins.Net.Tests", "Paladins.Net.Tests\Paladins.Net.Tests.csproj", "{BDD56D3C-9298-4C02-B6E5-18323BA4D4CC}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Paladins.Net.Tests", "Paladins.Net.Tests\Paladins.Net.Tests.csproj", "{BDD56D3C-9298-4C02-B6E5-18323BA4D4CC}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
