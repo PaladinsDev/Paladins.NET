@@ -1,3 +1,4 @@
+using System.Text.Json;
 using Paladins.Net.Enumerations;
 using Paladins.Net.Interfaces;
 using Paladins.Net.Models;
@@ -11,6 +12,7 @@ namespace Paladins.Net
         private bool _debugMode;
         private string _timestamp;
         public string ServiceURL { get; set; }
+        public Session Session { get; set; }
 
         public API(string DevID, string AuthKey, bool DebugMode = false, string apiUrl = "https://api.paladins.com/paladinsapi.svc")
         {
@@ -19,6 +21,26 @@ namespace Paladins.Net
             this._debugMode = DebugMode;
             this._timestamp = System.DateTime.UtcNow.ToString("yyyyMMddHHmmss");
             this.ServiceURL = apiUrl;
+        }
+
+        public API(string DevID, string AuthKey, bool DebugMode = false, string apiUrl = "https://api.paladins.com/paladinsapi.svc", Session establishedSession = null) : this(DevID, AuthKey, DebugMode, apiUrl)
+        {
+            if (establishedSession != null)
+            {
+                this.Session = establishedSession;
+            }
+        }
+
+        public API(string DevID, string AuthKey, bool DebugMode = false, string apiUrl = "https://api.paladins.com/paladinsapi.svc", JsonDocument establishedSession = null) : this(DevID, AuthKey, DebugMode, apiUrl)
+        {
+            if (establishedSession != null)
+            {
+                this.Session = new Session
+                {
+                    ID = establishedSession.RootElement.GetProperty("session_id").GetString(),
+                    Data = establishedSession
+                };
+            }
         }
 
         private string BuildURL(
