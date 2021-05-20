@@ -2,7 +2,7 @@
 {
     public enum Platform
     {
-        Unknown = 0,
+        Unknown = 9999,
         HiRez = 1,
         Steam = 5,
         EpicGames = 28,
