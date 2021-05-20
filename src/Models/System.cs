@@ -1,4 +1,5 @@
 ﻿using Paladins.Net.Interfaces;
+using System.Text.Json;
 
 namespace Paladins.Net.Models
 {
@@ -12,5 +13,12 @@ namespace Paladins.Net.Models
         public int SessionLifetime { get; set; }
         public uint RequestsUsed { get; set; }
         public uint RequestsLimit { get; set; }
+    }
+
+    public class Session : IModel
+    {
+        public string ID { get; set; }
+        public string CreatedAt { get; set; }
+        public JsonDocument Data { get; set; }
     }
 }
