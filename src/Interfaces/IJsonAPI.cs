@@ -1,10 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-
-namespace Paladins.Net.Interfaces
+﻿namespace Paladins.Net.Interfaces
 {
-    interface IJsonAPI
+    public interface IJsonAPI
     {
     }
 }

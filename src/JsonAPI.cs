@@ -10,25 +10,25 @@ namespace Paladins.Net
 {
     public class JsonAPI : IJsonAPI
     {
-        private string _devID;
-        private string _authKey;
-        private bool _debugMode;
-        private string _timestamp;
-        private HttpClient _httpClient;
+        private readonly string _devID;
+        private readonly string _authKey;
+        private readonly bool _debugMode;
+        private readonly string _timestamp;
+        private readonly HttpClient _httpClient;
         public string ServiceURL { get; }
         public Session Session { get; }
 
-        public JsonAPI(string DevID, string AuthKey, string timestamp, string apiUrl = null,  bool DebugMode = false)
+        public JsonAPI(string devId, string authKey, string timestamp, string apiUrl = null,  bool debugMode = false)
         {
-            this._devID = DevID;
-            this._authKey = AuthKey;
-            this._debugMode = DebugMode;
+            this._devID = devId;
+            this._authKey = authKey;
+            this._debugMode = debugMode;
             this._timestamp = timestamp;
             ServiceURL = apiUrl;
             this._httpClient = new HttpClient();
         }
 
-        public JsonAPI(string DevID, string AuthKey, Session establishedSession = null, string apiUrl = null, bool DebugMode = false) : this(DevID, AuthKey, apiUrl, DebugMode)
+        public JsonAPI(string devId, string authKey, string timestamp, Session establishedSession = null, string apiUrl = null, bool debugMode = false) : this(devId, authKey, timestamp, apiUrl, debugMode)
         {
             if (establishedSession != null)
             {
@@ -36,7 +36,7 @@ namespace Paladins.Net
             }
         }
 
-        public JsonAPI(string DevID, string AuthKey, JsonDocument establishedSession = null, string apiUrl = null, bool DebugMode = false) : this(DevID, AuthKey, apiUrl, DebugMode)
+        public JsonAPI(string devId, string authKey, string timestamp, JsonDocument establishedSession = null, string apiUrl = null, bool debugMode = false) : this(devId, authKey, timestamp, apiUrl, debugMode)
         {
             if (establishedSession != null)
             {
