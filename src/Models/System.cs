@@ -18,7 +18,6 @@ namespace Paladins.Net.Models
     public class Session : IModel
     {
         public string ID { get; set; }
-        public string CreatedAt { get; set; }
         public JsonDocument Data { get; set; }
     }
 }
