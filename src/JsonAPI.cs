@@ -1,10 +1,11 @@
-using System.Net.Http.Json;
+﻿using System.Net.Http.Json;
 using System.Net.Http;
 using System.Text.Json;
 using Paladins.Net.Enumerations;
 using Paladins.Net.Models;
 using System.Threading.Tasks;
 using Paladins.Net.Interfaces;
+using Paladins.Net.Exceptions;
 
 namespace Paladins.Net
 {
@@ -28,7 +29,7 @@ namespace Paladins.Net
             this._httpClient = new HttpClient();
         }
 
-        public JsonAPI(string devId, string authKey, string timestamp, Session establishedSession = null, string apiUrl = null, bool debugMode = false) : this(devId, authKey, timestamp, apiUrl, debugMode)
+        public JsonAPI(string devId, string authKey, string timestamp, Session establishedSession, string apiUrl = null, bool debugMode = false) : this(devId, authKey, timestamp, apiUrl, debugMode)
         {
             if (establishedSession != null)
             {
@@ -36,7 +37,7 @@ namespace Paladins.Net
             }
         }
 
-        public JsonAPI(string devId, string authKey, string timestamp, JsonDocument establishedSession = null, string apiUrl = null, bool debugMode = false) : this(devId, authKey, timestamp, apiUrl, debugMode)
+        public JsonAPI(string devId, string authKey, string timestamp, JsonDocument establishedSession, string apiUrl = null, bool debugMode = false) : this(devId, authKey, timestamp, apiUrl, debugMode)
         {
             if (establishedSession != null)
             {
@@ -127,6 +128,28 @@ namespace Paladins.Net
             }
 
             return null;
+        }
+
+        public async Task<JsonDocument> CreateSession()
+        {
+            var request = new HttpRequestMessage(HttpMethod.Get, $"{ServiceURL}/createsessionJson/{this._devID}/{Hash("createsession")}/{this._timestamp}");
+            using var response = await this._httpClient.SendAsync(request);
+
+            if (response.IsSuccessStatusCode)
+            {
+                try
+                {
+                    using var content = await response.Content.ReadFromJsonAsync<JsonDocument>();
+
+                    return content;
+                }
+                catch (HttpRequestException)
+                {
+                    //
+                }
+            }
+
+            throw new System.Exception("Can not create session.");
         }
 
         public string Hash(string method)
