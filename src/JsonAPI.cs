@@ -1,4 +1,4 @@
-﻿using System.Net.Http.Json;
+using System.Net.Http.Json;
 using System.Net.Http;
 using System.Text.Json;
 using Paladins.Net.Enumerations;
@@ -50,7 +50,7 @@ namespace Paladins.Net
 
         public async Task<JsonDocument> GetCurrentDataUsage()
         {
-            return await CallEndpointAsync(this.BuildURL("getdataused"), this._httpClient);
+            return await CallEndpointAsync(this.BuildURL("getdataused"));
         }
 
         public string BuildURL(
@@ -109,10 +109,10 @@ namespace Paladins.Net
             return url;
         }
 
-        public async Task<JsonDocument> CallEndpointAsync(string uri, HttpClient httpClient)
+        public async Task<JsonDocument> CallEndpointAsync(string uri)
         {
             var request = new HttpRequestMessage(HttpMethod.Get, uri);
-            using var response = await httpClient.SendAsync(request);
+            using var response = await this._httpClient.SendAsync(request);
 
             if (response.IsSuccessStatusCode)
             {
