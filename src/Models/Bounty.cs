@@ -1,9 +1,8 @@
 ﻿using Paladins.Net.Enumerations;
-using Paladins.Net.Interfaces;
 
 namespace Paladins.Net.Models
 {
-    public class BountyItem : IModel
+    public class BountyItem : Model
     {
         public bool Active { get; set; }
         public int ItemID { get; set; }

@@ -1,10 +1,9 @@
 ﻿using System.Collections.Generic;
 using Paladins.Net.Enumerations;
-using Paladins.Net.Interfaces;
 
 namespace Paladins.Net.Models
 {
-    public class PartialChampion : IModel
+    public class PartialChampion : Model
     {
         public int ID { get; set; }
         public string Name { get; set; }
@@ -19,10 +18,10 @@ namespace Paladins.Net.Models
         public int Health { get; set; }
         public int Speed { get; set; }
         public List<Ability> Abilities { get; set; }
-        public List<Talents> MyProperty { get; set; }
+        //public List<Talents> MyProperty { get; set; }
     }
 
-    public class ChampionSkin : IModel
+    public class ChampionSkin : Model
     {
         public int ID { get; set; }
         public string Name { get; set; }

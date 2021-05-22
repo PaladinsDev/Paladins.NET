@@ -1,9 +1,8 @@
 ﻿using Paladins.Net.Enumerations;
-using Paladins.Net.Interfaces;
 
 namespace Paladins.Net.Models
 {
-    public class PartialPlayer : IModel
+    public class PartialPlayer : Model
     {
         public uint ID { get; set; }
         public string Name { get; set; }
@@ -29,13 +28,13 @@ namespace Paladins.Net.Models
         public RankedPlayerStats RankedController { get; set; }
     }
 
-    public class PlayerAvatar : IModel
+    public class PlayerAvatar : Model
     {
         public uint ID { get; set; }
         public string URL { get; set; }
     }
 
-    public class CasualPlayerStats : IModel
+    public class CasualPlayerStats : Model
     {
         public uint Wins { get; set; }
         public uint Losses { get; set; }
@@ -50,7 +49,7 @@ namespace Paladins.Net.Models
         public uint Season { get; set; }
     }
 
-    public class ChampionStats : IModel
+    public class ChampionStats : Model
     {
         public uint Wins { get; set; }
         public uint Losses { get; set; }

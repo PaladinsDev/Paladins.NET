@@ -1,9 +1,8 @@
 ﻿using Paladins.Net.Enumerations;
-using Paladins.Net.Interfaces;
 
 namespace Paladins.Net.Models
 {
-    public class Ability : IModel
+    public class Ability : Model
     {
         public uint ID { get; set; }
         public int RechargeSeconds { get; set; }

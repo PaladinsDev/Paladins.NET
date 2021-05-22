@@ -1,9 +1,8 @@
-﻿using Paladins.Net.Interfaces;
-using System.Text.Json;
+﻿using System.Text.Json;
 
 namespace Paladins.Net.Models
 {
-    public class DataUsage : IModel
+    public class DataUsage : Model
     {
         public string Timestamp { get; set; }
         public uint ActiveSessions { get; set; }
@@ -15,7 +14,7 @@ namespace Paladins.Net.Models
         public uint RequestsLimit { get; set; }
     }
 
-    public class Session : IModel
+    public class Session : Model
     {
         public string ID { get; set; }
         public JsonDocument Data { get; set; }

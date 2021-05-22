@@ -1,9 +1,8 @@
-﻿using Paladins.Net.Enumerations;
-using Paladins.Net.Interfaces;
+using Paladins.Net.Enumerations;
 
 namespace Paladins.Net.Models
 {
-    public class PartialMatch : IModel
+    public class PartialMatch : Model
     {
         public uint ID { get; set; }
         public Queue Queue { get; set; }
