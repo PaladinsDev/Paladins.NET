@@ -6,7 +6,7 @@ namespace Paladins.Net
 {
     public class API
     {
-        private JsonAPI _jsonAPI;
+        private IJsonAPI _jsonAPI;
 
         public API(string DevID, string AuthKey, string apiUrl = null, bool DebugMode = false)
         {
