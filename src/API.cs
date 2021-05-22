@@ -1,7 +1,11 @@
+using System.Net.Http.Json;
+using System.Net.Http;
 using System.Text.Json;
 using Paladins.Net.Enumerations;
 using Paladins.Net.Interfaces;
 using Paladins.Net.Models;
+using System.Threading.Tasks;
+using System.Collections.Generic;
 
 namespace Paladins.Net
 {
@@ -11,19 +15,21 @@ namespace Paladins.Net
         private string _authKey;
         private bool _debugMode;
         private string _timestamp;
-        public string ServiceURL { get; set; }
-        public Session Session { get; set; }
+        private HttpClient _httpClient;
+        public string ServiceURL { get; }
+        public Session Session { get; }
 
-        public API(string DevID, string AuthKey, bool DebugMode = false, string apiUrl = "https://api.paladins.com/paladinsapi.svc")
+        public API(string DevID, string AuthKey, string apiUrl = null, bool DebugMode = false)
         {
             this._devID = DevID;
             this._authKey = AuthKey;
             this._debugMode = DebugMode;
             this._timestamp = System.DateTime.UtcNow.ToString("yyyyMMddHHmmss");
-            this.ServiceURL = apiUrl;
+            ServiceURL = apiUrl ?? APIStatics.DEFAULT_API_URL;
+            this._httpClient = new HttpClient();
         }
 
-        public API(string DevID, string AuthKey, bool DebugMode = false, string apiUrl = "https://api.paladins.com/paladinsapi.svc", Session establishedSession = null) : this(DevID, AuthKey, DebugMode, apiUrl)
+        public API(string DevID, string AuthKey, Session establishedSession = null, string apiUrl = null, bool DebugMode = false) : this(DevID, AuthKey, apiUrl, DebugMode)
         {
             if (establishedSession != null)
             {
@@ -31,7 +37,7 @@ namespace Paladins.Net
             }
         }
 
-        public API(string DevID, string AuthKey, bool DebugMode = false, string apiUrl = "https://api.paladins.com/paladinsapi.svc", JsonDocument establishedSession = null) : this(DevID, AuthKey, DebugMode, apiUrl)
+        public API(string DevID, string AuthKey, JsonDocument establishedSession = null, string apiUrl = null, bool DebugMode = false) : this(DevID, AuthKey, apiUrl, DebugMode)
         {
             if (establishedSession != null)
             {
@@ -111,5 +117,10 @@ namespace Paladins.Net
 
             return str.ToString();
         }
+    }
+
+    public class APIStatics
+    {
+        public readonly static string DEFAULT_API_URL = "https://api.paladins.com/paladinsapi.svc";
     }
 }
