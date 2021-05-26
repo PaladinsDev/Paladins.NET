@@ -1,4 +1,4 @@
-﻿using System.Net.Http.Json;
+using System.Net.Http.Json;
 using System.Net.Http;
 using System.Text.Json;
 using Paladins.Net.Enumerations;
@@ -19,7 +19,7 @@ namespace Paladins.Net
         public string ServiceURL { get; }
         public Session Session { get; }
 
-        public JsonAPI(string devId, string authKey, string timestamp, string apiUrl = null,  bool debugMode = false)
+        public JsonAPI(string devId, string authKey, string timestamp, string apiUrl,  bool debugMode = false)
         {
             this._devID = devId;
             this._authKey = authKey;
@@ -29,7 +29,7 @@ namespace Paladins.Net
             this._httpClient = new HttpClient();
         }
 
-        public JsonAPI(string devId, string authKey, string timestamp, Session establishedSession, string apiUrl = null, bool debugMode = false) : this(devId, authKey, timestamp, apiUrl, debugMode)
+        public JsonAPI(string devId, string authKey, string timestamp, Session establishedSession, string apiUrl, bool debugMode = false) : this(devId, authKey, timestamp, apiUrl, debugMode)
         {
             if (establishedSession != null)
             {
@@ -37,7 +37,7 @@ namespace Paladins.Net
             }
         }
 
-        public JsonAPI(string devId, string authKey, string timestamp, JsonDocument establishedSession, string apiUrl = null, bool debugMode = false) : this(devId, authKey, timestamp, apiUrl, debugMode)
+        public JsonAPI(string devId, string authKey, string timestamp, JsonDocument establishedSession, string apiUrl, bool debugMode = false) : this(devId, authKey, timestamp, apiUrl, debugMode)
         {
             if (establishedSession != null)
             {
