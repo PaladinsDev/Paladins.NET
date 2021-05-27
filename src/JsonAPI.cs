@@ -55,12 +55,12 @@ namespace Paladins.Net
             return await CallEndpointAsync(this.BuildURL("getchampions", null, language));
         }
 
-        public async Task<JsonDocument> GetChampionCards(Enumerations.Champion champion, Language language = Language.English)
+        public async Task<JsonDocument> GetChampionCards(int champion, Language language = Language.English)
         {
             return await CallEndpointAsync(this.BuildURL("getchampioncards", null, language, 0, champion));
         }
 
-        public async Task<JsonDocument> GetChampionSkins(Enumerations.Champion champion, Language language = Language.English)
+        public async Task<JsonDocument> GetChampionSkins(int champion, Language language = Language.English)
         {
             return await CallEndpointAsync(this.BuildURL("getchampioncards", null, language, 0, champion));
         }
@@ -101,7 +101,7 @@ namespace Paladins.Net
             string player = null,
             Language language = default, /* This defaults to 0, I believe. Test this. */
             uint matchID = 0,
-            Enumerations.Champion champion = default, /* Same applies here */
+            int champion = 0,
             Queue queue = default, /* Same applies here */
             int tier = 0,
             int season = 0,
