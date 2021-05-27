@@ -1,4 +1,4 @@
-using System.Net.Http.Json;
+﻿using System.Net.Http.Json;
 using System.Net.Http;
 using System.Text.Json;
 using Paladins.Net.Enumerations;
@@ -6,6 +6,7 @@ using Paladins.Net.Models;
 using System.Threading.Tasks;
 using Paladins.Net.Interfaces;
 using Paladins.Net.Exceptions;
+using System;
 
 namespace Paladins.Net
 {
@@ -17,7 +18,7 @@ namespace Paladins.Net
         private readonly string _timestamp;
         private readonly HttpClient _httpClient;
         public string ServiceURL { get; }
-        public Session Session { get; }
+        public Session Session { get; set; }
 
         public JsonAPI(string devId, string authKey, string timestamp, string apiUrl,  bool debugMode = false)
         {
@@ -49,6 +50,47 @@ namespace Paladins.Net
             }
         }
 
+        public async Task<JsonDocument> GetChampions(Language language = Language.English)
+        {
+            return await CallEndpointAsync(this.BuildURL("getchampions", null, language));
+        }
+
+        public async Task<JsonDocument> GetChampionCards(Enumerations.Champion champion, Language language = Language.English)
+        {
+            return await CallEndpointAsync(this.BuildURL("getchampioncards", null, language, 0, champion));
+        }
+
+        public async Task<JsonDocument> GetChampionSkins(Enumerations.Champion champion, Language language = Language.English)
+        {
+            return await CallEndpointAsync(this.BuildURL("getchampioncards", null, language, 0, champion));
+        }
+
+        public async Task<JsonDocument> GetItems(Language language = Language.English)
+        {
+            return await CallEndpointAsync(this.BuildURL("getitems", null, language));
+        }
+
+        public async Task<JsonDocument> GetCompletedMatchDetails(uint matchID)
+        {
+            return await CallEndpointAsync(this.BuildURL("mycall", null, 0, matchID));
+        }
+
+        public async Task<JsonDocument> GetCompletedMatchDetails(uint[] matchIDs)
+        {
+            // We're calling it on the player argument just because we need it as a string, that's all. Nothing special.
+            return await CallEndpointAsync(this.BuildURL("getmatchdetailsbatch", string.Join(',', matchIDs)));
+        }
+
+        public async Task<JsonDocument> GetActiveMatchDetails(uint matchID)
+        {
+            return await CallEndpointAsync(this.BuildURL("getmatchplayerdetails", null, 0, matchID));
+        }
+
+        public async Task<JsonDocument> GetBountyItems()
+        {
+            return await CallEndpointAsync(this.BuildURL("getbountyitems"));
+        }
+
         public async Task<JsonDocument> GetCurrentDataUsage()
         {
             return await CallEndpointAsync(this.BuildURL("getdataused"));
@@ -65,7 +107,7 @@ namespace Paladins.Net
             int season = 0,
             Platform platform = default /* Also here */ )
         {
-            string url = $"{this.ServiceURL}/{method}Json/{this._devID}/{this.Hash(method)}/{this.Session}/{this._timestamp}";
+            string url = $"{this.ServiceURL}/{method}Json/{this._devID}/{this.Hash(method)}/{this.Session.ID}/{this._timestamp}";
 
             if (platform > 0)
             {
@@ -119,18 +161,64 @@ namespace Paladins.Net
             {
                 try
                 {
-                    return await response.Content.ReadFromJsonAsync<JsonDocument>();
+                    var res = await response.Content.ReadFromJsonAsync<JsonDocument>();
+
+                    if (res.RootElement.GetArrayLength() > 0 &&
+                        res.RootElement[0].TryGetProperty("ret_msg", out JsonElement retMsg) &&
+                        retMsg.ToString().ToLower().Contains("invalid session id"))
+                    {
+                        return await CallEndpointAsync(uri, 0);
+                    } else
+                    {
+                        return res;
+                    }
                 }
-                catch (HttpRequestException)
+                catch (Exception ex)
                 {
-                    //
+                    return await Task.FromException<JsonDocument>(ex);
                 }
             }
 
             return null;
         }
 
-        public async Task<JsonDocument> CreateSession()
+        public async Task<JsonDocument> CallEndpointAsync(string uri, int currentTry, int maxTries = 3)
+        {
+            if (currentTry < maxTries)
+            {
+                try
+                {
+                    var session = await CreateSession(false);
+
+                    if (session.RootElement.TryGetProperty("session_id", out JsonElement id) &&
+                        session.RootElement.TryGetProperty("timestamp", out JsonElement timestamp))
+                    {
+                        Session = new Session()
+                        {
+                            ID = id.GetString(),
+                            Timestamp = timestamp.GetString()
+                        };
+
+                        return await CallEndpointAsync(uri);
+                    } else
+                    {
+                        return await CallEndpointAsync(uri, currentTry + 1);
+                    }
+                } catch (Exception ex) {
+                    if (currentTry < maxTries)
+                    {
+                        return await CallEndpointAsync(uri, currentTry + 1);
+                    } else
+                    {
+                        return await Task.FromException<JsonDocument>(ex);
+                    }
+                }
+            }
+
+            return await Task.FromException<JsonDocument>(new InvalidSessionException("Could not create a new session."));
+        }
+
+        public async Task<JsonDocument> CreateSession(bool setSession = true)
         {
             var request = new HttpRequestMessage(HttpMethod.Get, $"{ServiceURL}/createsessionJson/{this._devID}/{Hash("createsession")}/{this._timestamp}");
             using var response = await this._httpClient.SendAsync(request);
@@ -139,13 +227,34 @@ namespace Paladins.Net
             {
                 try
                 {
-                    using var content = await response.Content.ReadFromJsonAsync<JsonDocument>();
+                    var content = await response.Content.ReadFromJsonAsync<JsonDocument>();
+
+                    if (content.RootElement.GetProperty("ret_msg").GetString().ToLower().Contains("invalid developer"))
+                    {
+                        return await Task.FromException<JsonDocument>(new UnauthorizedException("The developer ID and authorization key used are invalid."));
+                    }
+
+                    if (setSession)
+                    {
+                        if (content.RootElement.TryGetProperty("session_id", out JsonElement id) &&
+                            content.RootElement.TryGetProperty("timestamp", out JsonElement timestamp))
+                        {
+                            Session = new Session()
+                            {
+                                ID = id.GetString(),
+                                Timestamp = timestamp.GetString()
+                            };
+                        } else
+                        {
+                            return await Task.FromException<JsonDocument>(new InvalidSessionException("New session can not be set."));
+                        }
+                    }
 
                     return content;
                 }
-                catch (HttpRequestException)
+                catch (Exception ex)
                 {
-                    //
+                    return await Task.FromException<JsonDocument>(ex);
                 }
             }
 
