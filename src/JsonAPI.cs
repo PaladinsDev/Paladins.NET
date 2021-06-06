@@ -96,6 +96,64 @@ namespace Paladins.Net
             return await CallEndpointAsync(this.BuildURL("getdataused"));
         }
 
+        public async Task<JsonDocument> GetCurrentPatchVersion()
+        {
+            return await CallEndpointAsync(this.BuildURL("getpatchinfo"));
+        }
+
+        public async Task<JsonDocument> Ping()
+        {
+            return await CallEndpointAsync(this.BuildURL("ping"));
+        }
+
+        public async Task<JsonDocument> TestSession()
+        {
+            return await CallEndpointAsync(this.BuildURL("testsession"));
+        }
+
+        public async Task<JsonDocument> CreateSession(bool setSession = true)
+        {
+            var request = new HttpRequestMessage(HttpMethod.Get, $"{ServiceURL}/createsessionJson/{this._devID}/{Hash("createsession")}/{this._timestamp}");
+            using var response = await this._httpClient.SendAsync(request);
+
+            if (response.IsSuccessStatusCode)
+            {
+                try
+                {
+                    var content = await response.Content.ReadFromJsonAsync<JsonDocument>();
+
+                    if (content.RootElement.GetProperty("ret_msg").GetString().ToLower().Contains("invalid developer"))
+                    {
+                        return await Task.FromException<JsonDocument>(new UnauthorizedException("The developer ID and authorization key used are invalid."));
+                    }
+
+                    if (setSession)
+                    {
+                        if (content.RootElement.TryGetProperty("session_id", out JsonElement id) &&
+                            content.RootElement.TryGetProperty("timestamp", out JsonElement timestamp))
+                        {
+                            Session = new Session()
+                            {
+                                ID = id.GetString(),
+                                Timestamp = timestamp.GetString()
+                            };
+                        } else
+                        {
+                            return await Task.FromException<JsonDocument>(new InvalidSessionException("New session can not be set."));
+                        }
+                    }
+
+                    return content;
+                }
+                catch (Exception ex)
+                {
+                    return await Task.FromException<JsonDocument>(ex);
+                }
+            }
+
+            throw new System.Exception("Can not create session.");
+        }
+
         public string BuildURL(
             string method,
             string player = null,
@@ -107,6 +165,11 @@ namespace Paladins.Net
             int season = 0,
             Platform platform = default /* Also here */ )
         {
+            if (this.Session.ID == null)
+            {
+                throw new InvalidSessionException("Session ID can not be null");
+            }
+
             string url = $"{this.ServiceURL}/{method}Json/{this._devID}/{this.Hash(method)}/{this.Session.ID}/{this._timestamp}";
 
             if (platform > 0)
@@ -167,7 +230,7 @@ namespace Paladins.Net
                         res.RootElement[0].TryGetProperty("ret_msg", out JsonElement retMsg) &&
                         retMsg.ToString().ToLower().Contains("invalid session id"))
                     {
-                        return await CallEndpointAsync(uri, 0);
+                        return await Task.FromException<JsonDocument>(new InvalidSessionException("Session is no longer valid."));
                     } else
                     {
                         return res;
@@ -180,85 +243,6 @@ namespace Paladins.Net
             }
 
             return null;
-        }
-
-        public async Task<JsonDocument> CallEndpointAsync(string uri, int currentTry, int maxTries = 3)
-        {
-            if (currentTry < maxTries)
-            {
-                try
-                {
-                    var session = await CreateSession(false);
-
-                    if (session.RootElement.TryGetProperty("session_id", out JsonElement id) &&
-                        session.RootElement.TryGetProperty("timestamp", out JsonElement timestamp))
-                    {
-                        Session = new Session()
-                        {
-                            ID = id.GetString(),
-                            Timestamp = timestamp.GetString()
-                        };
-
-                        return await CallEndpointAsync(uri);
-                    } else
-                    {
-                        return await CallEndpointAsync(uri, currentTry + 1);
-                    }
-                } catch (Exception ex) {
-                    if (currentTry < maxTries)
-                    {
-                        return await CallEndpointAsync(uri, currentTry + 1);
-                    } else
-                    {
-                        return await Task.FromException<JsonDocument>(ex);
-                    }
-                }
-            }
-
-            return await Task.FromException<JsonDocument>(new InvalidSessionException("Could not create a new session."));
-        }
-
-        public async Task<JsonDocument> CreateSession(bool setSession = true)
-        {
-            var request = new HttpRequestMessage(HttpMethod.Get, $"{ServiceURL}/createsessionJson/{this._devID}/{Hash("createsession")}/{this._timestamp}");
-            using var response = await this._httpClient.SendAsync(request);
-
-            if (response.IsSuccessStatusCode)
-            {
-                try
-                {
-                    var content = await response.Content.ReadFromJsonAsync<JsonDocument>();
-
-                    if (content.RootElement.GetProperty("ret_msg").GetString().ToLower().Contains("invalid developer"))
-                    {
-                        return await Task.FromException<JsonDocument>(new UnauthorizedException("The developer ID and authorization key used are invalid."));
-                    }
-
-                    if (setSession)
-                    {
-                        if (content.RootElement.TryGetProperty("session_id", out JsonElement id) &&
-                            content.RootElement.TryGetProperty("timestamp", out JsonElement timestamp))
-                        {
-                            Session = new Session()
-                            {
-                                ID = id.GetString(),
-                                Timestamp = timestamp.GetString()
-                            };
-                        } else
-                        {
-                            return await Task.FromException<JsonDocument>(new InvalidSessionException("New session can not be set."));
-                        }
-                    }
-
-                    return content;
-                }
-                catch (Exception ex)
-                {
-                    return await Task.FromException<JsonDocument>(ex);
-                }
-            }
-
-            throw new System.Exception("Can not create session.");
         }
 
         public string Hash(string method)
