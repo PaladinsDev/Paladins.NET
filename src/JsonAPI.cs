@@ -1,36 +1,36 @@
-﻿using System.Net.Http.Json;
-using System.Net.Http;
-using System.Text.Json;
-using Paladins.Net.Enumerations;
-using Paladins.Net.Models;
-using System.Threading.Tasks;
-using Paladins.Net.Interfaces;
-using Paladins.Net.Exceptions;
-using System;
-
-namespace Paladins.Net
+﻿namespace Paladins.Net
 {
-    public class JsonAPI : IJsonAPI
+    using System;
+    using System.Net.Http;
+    using System.Net.Http.Json;
+    using System.Text.Json;
+    using System.Threading.Tasks;
+    using Paladins.Net.Enumerations;
+    using Paladins.Net.Exceptions;
+    using Paladins.Net.Interfaces;
+    using Paladins.Net.Models;
+
+    public class JsonApi : IJsonAPI
     {
-        private readonly string _devID;
-        private readonly string _authKey;
-        private readonly bool _debugMode;
-        private readonly string _timestamp;
-        private readonly HttpClient _httpClient;
+        private readonly string devID;
+        private readonly string authKey;
+        private readonly bool debugMode;
+        private readonly string timestamp;
+        private readonly HttpClient httpClient;
         public string ServiceURL { get; }
         public Session Session { get; set; }
 
-        public JsonAPI(string devId, string authKey, string timestamp, string apiUrl,  bool debugMode = false)
+        public JsonApi(string devId, string authKey, string timestamp, string apiUrl,  bool debugMode = false)
         {
-            this._devID = devId;
-            this._authKey = authKey;
-            this._debugMode = debugMode;
-            this._timestamp = timestamp;
+            this.devID = devId;
+            this.authKey = authKey;
+            this.debugMode = debugMode;
+            this.timestamp = timestamp;
             ServiceURL = apiUrl;
-            this._httpClient = new HttpClient();
+            this.httpClient = new HttpClient();
         }
 
-        public JsonAPI(string devId, string authKey, string timestamp, Session establishedSession, string apiUrl, bool debugMode = false) : this(devId, authKey, timestamp, apiUrl, debugMode)
+        public JsonApi(string devId, string authKey, string timestamp, Session establishedSession, string apiUrl, bool debugMode = false) : this(devId, authKey, timestamp, apiUrl, debugMode)
         {
             if (establishedSession != null)
             {
@@ -38,7 +38,7 @@ namespace Paladins.Net
             }
         }
 
-        public JsonAPI(string devId, string authKey, string timestamp, JsonDocument establishedSession, string apiUrl, bool debugMode = false) : this(devId, authKey, timestamp, apiUrl, debugMode)
+        public JsonApi(string devId, string authKey, string timestamp, JsonDocument establishedSession, string apiUrl, bool debugMode = false) : this(devId, authKey, timestamp, apiUrl, debugMode)
         {
             if (establishedSession != null)
             {
@@ -113,8 +113,8 @@ namespace Paladins.Net
 
         public async Task<JsonDocument> CreateSession(bool setSession = true)
         {
-            var request = new HttpRequestMessage(HttpMethod.Get, $"{ServiceURL}/createsessionJson/{this._devID}/{Hash("createsession")}/{this._timestamp}");
-            using var response = await this._httpClient.SendAsync(request);
+            var request = new HttpRequestMessage(HttpMethod.Get, $"{ServiceURL}/createsessionJson/{this.devID}/{Hash("createsession")}/{this.timestamp}");
+            using var response = await this.httpClient.SendAsync(request);
 
             if (response.IsSuccessStatusCode)
             {
@@ -170,7 +170,7 @@ namespace Paladins.Net
                 throw new InvalidSessionException("Session ID can not be null");
             }
 
-            string url = $"{this.ServiceURL}/{method}Json/{this._devID}/{this.Hash(method)}/{this.Session.ID}/{this._timestamp}";
+            string url = $"{this.ServiceURL}/{method}Json/{this.devID}/{this.Hash(method)}/{this.Session.ID}/{this.timestamp}";
 
             if (platform > 0)
             {
@@ -218,7 +218,7 @@ namespace Paladins.Net
         public async Task<JsonDocument> CallEndpointAsync(string uri)
         {
             var request = new HttpRequestMessage(HttpMethod.Get, uri);
-            using var response = await this._httpClient.SendAsync(request);
+            using var response = await this.httpClient.SendAsync(request);
 
             if (response.IsSuccessStatusCode)
             {
@@ -247,7 +247,7 @@ namespace Paladins.Net
 
         public string Hash(string method)
         {
-            var bytes = new System.Security.Cryptography.MD5CryptoServiceProvider().ComputeHash(System.Text.Encoding.UTF8.GetBytes($"{this._devID}{method}{this._authKey}{this._timestamp}"));
+            var bytes = new System.Security.Cryptography.MD5CryptoServiceProvider().ComputeHash(System.Text.Encoding.UTF8.GetBytes($"{this.devID}{method}{this.authKey}{this.timestamp}"));
             var str = new System.Text.StringBuilder();
 
             foreach (var b in bytes)
