@@ -11,8 +11,9 @@
 			<Code Language="CSharp">
 				<![CDATA[public async Task<JsonDocument> $MethodName$()
 {
-	return await CallEndpointAsync(this.BuildURL("$Endpoint$"));
-}]]>
+	return await this.CallEndpointAsync(this.BuildURL("$Endpoint$"));
+}
+]]>
 			</Code>
 			<Declarations>
 				<Literal>
