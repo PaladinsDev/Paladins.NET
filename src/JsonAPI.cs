@@ -26,7 +26,7 @@
             this.authKey = authKey;
             this.debugMode = debugMode;
             this.timestamp = timestamp;
-            ServiceURL = apiUrl;
+            this.ServiceURL = apiUrl;
             this.httpClient = new HttpClient();
         }
 
@@ -45,70 +45,70 @@
                 this.Session = new Session
                 {
                     ID = establishedSession.RootElement.GetProperty("session_id").GetString(),
-                    Data = establishedSession
+                    Data = establishedSession,
                 };
             }
         }
 
         public async Task<JsonDocument> GetChampions(Language language = Language.English)
         {
-            return await CallEndpointAsync(this.BuildURL("getchampions", null, language));
+            return await this.CallEndpointAsync(this.BuildURL("getchampions", null, language));
         }
 
         public async Task<JsonDocument> GetChampionCards(int champion, Language language = Language.English)
         {
-            return await CallEndpointAsync(this.BuildURL("getchampioncards", null, language, 0, champion));
+            return await this.CallEndpointAsync(this.BuildURL("getchampioncards", null, language, 0, champion));
         }
 
         public async Task<JsonDocument> GetChampionSkins(int champion, Language language = Language.English)
         {
-            return await CallEndpointAsync(this.BuildURL("getchampioncards", null, language, 0, champion));
+            return await this.CallEndpointAsync(this.BuildURL("getchampioncards", null, language, 0, champion));
         }
 
         public async Task<JsonDocument> GetItems(Language language = Language.English)
         {
-            return await CallEndpointAsync(this.BuildURL("getitems", null, language));
+            return await this.CallEndpointAsync(this.BuildURL("getitems", null, language));
         }
 
         public async Task<JsonDocument> GetCompletedMatchDetails(uint matchID)
         {
-            return await CallEndpointAsync(this.BuildURL("mycall", null, 0, matchID));
+            return await this.CallEndpointAsync(this.BuildURL("mycall", null, 0, matchID));
         }
 
         public async Task<JsonDocument> GetCompletedMatchDetails(uint[] matchIDs)
         {
             // We're calling it on the player argument just because we need it as a string, that's all. Nothing special.
-            return await CallEndpointAsync(this.BuildURL("getmatchdetailsbatch", string.Join(',', matchIDs)));
+            return await this.CallEndpointAsync(this.BuildURL("getmatchdetailsbatch", string.Join(',', matchIDs)));
         }
 
         public async Task<JsonDocument> GetActiveMatchDetails(uint matchID)
         {
-            return await CallEndpointAsync(this.BuildURL("getmatchplayerdetails", null, 0, matchID));
+            return await this.CallEndpointAsync(this.BuildURL("getmatchplayerdetails", null, 0, matchID));
         }
 
         public async Task<JsonDocument> GetBountyItems()
         {
-            return await CallEndpointAsync(this.BuildURL("getbountyitems"));
+            return await this.CallEndpointAsync(this.BuildURL("getbountyitems"));
         }
 
         public async Task<JsonDocument> GetCurrentDataUsage()
         {
-            return await CallEndpointAsync(this.BuildURL("getdataused"));
+            return await this.CallEndpointAsync(this.BuildURL("getdataused"));
         }
 
         public async Task<JsonDocument> GetCurrentPatchVersion()
         {
-            return await CallEndpointAsync(this.BuildURL("getpatchinfo"));
+            return await this.CallEndpointAsync(this.BuildURL("getpatchinfo"));
         }
 
         public async Task<JsonDocument> Ping()
         {
-            return await CallEndpointAsync(this.BuildURL("ping"));
+            return await this.CallEndpointAsync(this.BuildURL("ping"));
         }
 
         public async Task<JsonDocument> TestSession()
         {
-            return await CallEndpointAsync(this.BuildURL("testsession"));
+            return await this.CallEndpointAsync(this.BuildURL("testsession"));
         }
 
         public async Task<JsonDocument> CreateSession(bool setSession = true)
