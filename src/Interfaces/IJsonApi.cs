@@ -106,6 +106,18 @@
         /// <param name="language">Language.</param>
         /// <returns>A <see cref="Task"/> representing the asynchronous operation.</returns>
         Task<JsonDocument> GetItems(Language language = Language.English);
+        Task<JsonDocument> GetPlayer(uint playerID);
+        Task<JsonDocument> GetPlayerChampionRanks(uint playerID);
+        Task<JsonDocument> GetPlayerIDByGamertag(string name, Platform platform);
+        Task<JsonDocument> GetPlayerIDByName(string name);
+        Task<JsonDocument> GetPlayerIDByPlatformUserID(string name, Platform platform);
+        Task<JsonDocument> GetPlayerIDForXboxAndSwitch(string name);
+        Task<JsonDocument> GetPlayerLoadouts(uint playerID, Language language);
+        Task<JsonDocument> GetPlayerMatchHistory(uint playerID);
+        Task<JsonDocument> GetPlayerQueueStats(uint playerID, Queue queue);
+        Task<JsonDocument> GetPlayerRelationships(uint playerID);
+        Task<JsonDocument> GetPlayers(uint[] playerIDs);
+        Task<JsonDocument> GetPlayerStatus(uint playerID);
 
         /// <summary>
         /// Calculates an MD5 hash based on the method, dev ID, and auth key.

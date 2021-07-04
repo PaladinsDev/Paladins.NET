@@ -118,6 +118,79 @@
         }
 
         /// <inheritdoc/>
+        public async Task<JsonDocument> GetPlayer(uint playerID)
+        {
+            // TODO DO THIS METHOD
+            return await this.CallEndpointAsync(this.BuildURL("mycall"));
+        }
+
+        /// <inheritdoc/>
+        public async Task<JsonDocument> GetPlayers(uint[] playerIDs)
+        {
+            return await this.CallEndpointAsync(this.BuildURL("getplayerbatch", string.Join(',', playerIDs)));
+        }
+
+        /// <inheritdoc/>
+        public async Task<JsonDocument> GetPlayerChampionRanks(uint playerID)
+        {
+            return await this.CallEndpointAsync(this.BuildURL("getchampionranks", playerID.ToString()));
+        }
+
+        /// <inheritdoc/>
+        public async Task<JsonDocument> GetPlayerIDByGamertag(string name, Platform platform)
+        {
+            return await this.CallEndpointAsync(this.BuildURL("getplayeridsbygamertag", name, 0, 0, 0, Queue.Unknown, 0, 0, platform));
+        }
+
+        /// <inheritdoc/>
+        public async Task<JsonDocument> GetPlayerIDByName(string name)
+        {
+            return await this.CallEndpointAsync(this.BuildURL("getplayeridbyname", name));
+        }
+
+        /// <inheritdoc/>
+        public async Task<JsonDocument> GetPlayerIDByPlatformUserID(string name, Platform platform)
+        {
+            return await this.CallEndpointAsync(this.BuildURL("getplayeridbyportaluserid", name, 0, 0, 0, Queue.Unknown, 0, 0, platform));
+        }
+
+        /// <inheritdoc/>
+        public async Task<JsonDocument> GetPlayerIDForXboxAndSwitch(string name)
+        {
+            return await this.CallEndpointAsync(this.BuildURL("getplateridinfoforxboxandswitch", name));
+        }
+
+        /// <inheritdoc/>
+        public async Task<JsonDocument> GetPlayerLoadouts(uint playerID, Language language)
+        {
+            return await this.CallEndpointAsync(this.BuildURL("getplayerloadouts", playerID.ToString(), language));
+        }
+
+        /// <inheritdoc/>
+        public async Task<JsonDocument> GetPlayerMatchHistory(uint playerID)
+        {
+            return await this.CallEndpointAsync(this.BuildURL("getmatchhistory", playerID.ToString()));
+        }
+
+        /// <inheritdoc/>
+        public async Task<JsonDocument> GetPlayerRelationships(uint playerID)
+        {
+            return await this.CallEndpointAsync(this.BuildURL("mycall"));
+        }
+
+        /// <inheritdoc/>
+        public async Task<JsonDocument> GetPlayerQueueStats(uint playerID, Queue queue)
+        {
+            return await this.CallEndpointAsync(this.BuildURL("getchampionranks", playerID.ToString(), 0, 0, 0, queue));
+        }
+
+        /// <inheritdoc/>
+        public async Task<JsonDocument> GetPlayerStatus(uint playerID)
+        {
+            return await this.CallEndpointAsync(this.BuildURL("getplayerstatus", playerID.ToString()));
+        }
+
+        /// <inheritdoc/>
         public async Task<JsonDocument> GetBountyItems()
         {
             return await this.CallEndpointAsync(this.BuildURL("getbountyitems"));

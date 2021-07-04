@@ -9,7 +9,8 @@
 		</Header>
 		<Snippet>
 			<Code Language="CSharp">
-				<![CDATA[public async Task<JsonDocument> $MethodName$()
+				<![CDATA[/// <inheritdoc/>
+public async Task<JsonDocument> $MethodName$()
 {
 	return await this.CallEndpointAsync(this.BuildURL("$Endpoint$"));
 }
