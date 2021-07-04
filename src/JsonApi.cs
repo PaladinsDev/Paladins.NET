@@ -20,7 +20,7 @@
         public string ServiceURL { get; }
         public Session Session { get; set; }
 
-        public JsonApi(string devId, string authKey, string timestamp, string apiUrl,  bool debugMode = false)
+        public JsonApi(string devId, string authKey, string timestamp, string apiUrl, bool debugMode = false)
         {
             this.devID = devId;
             this.authKey = authKey;
@@ -137,7 +137,8 @@
                                 ID = id.GetString(),
                                 Timestamp = timestamp.GetString()
                             };
-                        } else
+                        }
+                        else
                         {
                             return await Task.FromException<JsonDocument>(new InvalidSessionException("New session can not be set."));
                         }
@@ -231,7 +232,8 @@
                         retMsg.ToString().ToLower().Contains("invalid session id"))
                     {
                         return await Task.FromException<JsonDocument>(new InvalidSessionException("Session is no longer valid."));
-                    } else
+                    }
+                    else
                     {
                         return res;
                     }

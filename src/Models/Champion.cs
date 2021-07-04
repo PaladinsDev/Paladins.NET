@@ -1,31 +1,46 @@
-﻿using System.Collections.Generic;
-using Paladins.Net.Enumerations;
-
-namespace Paladins.Net.Models
+﻿namespace Paladins.Net.Models
 {
-    public class PartialChampion : Model
-    {
-        public int ID { get; set; }
-        public string Name { get; set; }
-    }
+    using System.Collections.Generic;
+    using Paladins.Net.Enumerations;
 
+    /// <summary>
+    /// Champion.
+    /// </summary>
     public partial class Champion : PartialChampion
     {
+        /// <summary>
+        /// Gets or sets role.
+        /// </summary>
         public ChampionRole Role { get; set; }
-        public string Title { get; set; }
-        public string Lore { get; set; }
-        public string IconURL { get; set; }
-        public int Health { get; set; }
-        public int Speed { get; set; }
-        public List<Ability> Abilities { get; set; }
-        //public List<Talents> MyProperty { get; set; }
-    }
 
-    public class ChampionSkin : Model
-    {
-        public int ID { get; set; }
-        public string Name { get; set; }
-        public PartialChampion Champion { get; set; }
-        public Rarity Rarity { get; set; }
+        /// <summary>
+        /// Gets or sets title.
+        /// </summary>
+        public string Title { get; set; }
+
+        /// <summary>
+        /// Gets or sets lore.
+        /// </summary>
+        public string Lore { get; set; }
+
+        /// <summary>
+        /// Gets or sets icon URL.
+        /// </summary>
+        public string IconURL { get; set; }
+
+        /// <summary>
+        /// Gets or sets health.
+        /// </summary>
+        public int Health { get; set; }
+
+        /// <summary>
+        /// Gets or sets speed.
+        /// </summary>
+        public int Speed { get; set; }
+
+        /// <summary>
+        /// Gets or sets abilities.
+        /// </summary>
+        public List<Ability> Abilities { get; set; }
     }
 }

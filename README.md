@@ -11,3 +11,10 @@ If it needs tracked again for variable updates or whatever then remove all priva
 ```
 git update-index --no-assume-unchanged src/Properties/launchSettings.json
 ```
+
+## Tools
+C# .Net Core 3.1
+Visual Studio 2019
+SonarLint - https://www.sonarlint.org/visualstudio
+coverlet.collector
+StyleCop.Analyzers
