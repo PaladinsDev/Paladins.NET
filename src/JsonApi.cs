@@ -10,16 +10,26 @@
     using Paladins.Net.Interfaces;
     using Paladins.Net.Models;
 
-    public class JsonApi : IJsonAPI
+    /// <summary>
+    /// The JSON version of the API.
+    /// It returns raw data from the Hi-Rez API and is what provides data <c>API</c>.
+    /// </summary>
+    public class JsonApi : IJsonApi
     {
         private readonly string devID;
         private readonly string authKey;
         private readonly bool debugMode;
         private readonly string timestamp;
         private readonly HttpClient httpClient;
-        public string ServiceURL { get; }
-        public Session Session { get; set; }
 
+        /// <summary>
+        /// Initializes a new instance of the <see cref="JsonApi"/> class.
+        /// </summary>
+        /// <param name="devId">Developer ID.</param>
+        /// <param name="authKey">Authorization key.</param>
+        /// <param name="timestamp">Timestamp to use.</param>
+        /// <param name="apiUrl">API URL to </param>
+        /// <param name="debugMode">Adds </param>
         public JsonApi(string devId, string authKey, string timestamp, string apiUrl, bool debugMode = false)
         {
             this.devID = devId;
@@ -30,7 +40,9 @@
             this.httpClient = new HttpClient();
         }
 
-        public JsonApi(string devId, string authKey, string timestamp, Session establishedSession, string apiUrl, bool debugMode = false) : this(devId, authKey, timestamp, apiUrl, debugMode)
+        /// <inheritdoc cref="JsonApi"/>
+        public JsonApi(string devId, string authKey, string timestamp, Session establishedSession, string apiUrl, bool debugMode = false)
+            : this(devId, authKey, timestamp, apiUrl, debugMode)
         {
             if (establishedSession != null)
             {
@@ -38,7 +50,9 @@
             }
         }
 
-        public JsonApi(string devId, string authKey, string timestamp, JsonDocument establishedSession, string apiUrl, bool debugMode = false) : this(devId, authKey, timestamp, apiUrl, debugMode)
+        /// <inheritdoc cref="JsonApi"/>
+        public JsonApi(string devId, string authKey, string timestamp, JsonDocument establishedSession, string apiUrl, bool debugMode = false)
+            : this(devId, authKey, timestamp, apiUrl, debugMode)
         {
             if (establishedSession != null)
             {
@@ -50,67 +64,90 @@
             }
         }
 
+        /// <summary>
+        /// Gets the current service/API URL.
+        /// </summary>
+        public string ServiceURL { get; }
+
+        /// <summary>
+        /// Gets or sets session.
+        /// </summary>
+        public Session Session { get; set; }
+
+        /// <inheritdoc/>
         public async Task<JsonDocument> GetChampions(Language language = Language.English)
         {
             return await this.CallEndpointAsync(this.BuildURL("getchampions", null, language));
         }
 
+        /// <inheritdoc/>
         public async Task<JsonDocument> GetChampionCards(int champion, Language language = Language.English)
         {
             return await this.CallEndpointAsync(this.BuildURL("getchampioncards", null, language, 0, champion));
         }
 
+        /// <inheritdoc/>
         public async Task<JsonDocument> GetChampionSkins(int champion, Language language = Language.English)
         {
             return await this.CallEndpointAsync(this.BuildURL("getchampioncards", null, language, 0, champion));
         }
 
+        /// <inheritdoc/>
         public async Task<JsonDocument> GetItems(Language language = Language.English)
         {
             return await this.CallEndpointAsync(this.BuildURL("getitems", null, language));
         }
 
+        /// <inheritdoc/>
         public async Task<JsonDocument> GetCompletedMatchDetails(uint matchID)
         {
             return await this.CallEndpointAsync(this.BuildURL("mycall", null, 0, matchID));
         }
 
+        /// <inheritdoc/>
         public async Task<JsonDocument> GetCompletedMatchDetails(uint[] matchIDs)
         {
             // We're calling it on the player argument just because we need it as a string, that's all. Nothing special.
             return await this.CallEndpointAsync(this.BuildURL("getmatchdetailsbatch", string.Join(',', matchIDs)));
         }
 
+        /// <inheritdoc/>
         public async Task<JsonDocument> GetActiveMatchDetails(uint matchID)
         {
             return await this.CallEndpointAsync(this.BuildURL("getmatchplayerdetails", null, 0, matchID));
         }
 
+        /// <inheritdoc/>
         public async Task<JsonDocument> GetBountyItems()
         {
             return await this.CallEndpointAsync(this.BuildURL("getbountyitems"));
         }
 
+        /// <inheritdoc/>
         public async Task<JsonDocument> GetCurrentDataUsage()
         {
             return await this.CallEndpointAsync(this.BuildURL("getdataused"));
         }
 
+        /// <inheritdoc/>
         public async Task<JsonDocument> GetCurrentPatchVersion()
         {
             return await this.CallEndpointAsync(this.BuildURL("getpatchinfo"));
         }
 
+        /// <inheritdoc/>
         public async Task<JsonDocument> Ping()
         {
             return await this.CallEndpointAsync(this.BuildURL("ping"));
         }
 
+        /// <inheritdoc/>
         public async Task<JsonDocument> TestSession()
         {
             return await this.CallEndpointAsync(this.BuildURL("testsession"));
         }
 
+        /// <inheritdoc/>
         public async Task<JsonDocument> CreateSession(bool setSession = true)
         {
             var request = new HttpRequestMessage(HttpMethod.Get, $"{ServiceURL}/createsessionJson/{this.devID}/{Hash("createsession")}/{this.timestamp}");
@@ -155,6 +192,7 @@
             throw new System.Exception("Can not create session.");
         }
 
+        /// <inheritdoc/>
         public string BuildURL(
             string method,
             string player = null,
@@ -216,6 +254,7 @@
             return url;
         }
 
+        /// <inheritdoc/>
         public async Task<JsonDocument> CallEndpointAsync(string uri)
         {
             var request = new HttpRequestMessage(HttpMethod.Get, uri);
@@ -247,6 +286,7 @@
             return null;
         }
 
+        /// <inheritdoc/>
         public string Hash(string method)
         {
             var bytes = new System.Security.Cryptography.MD5CryptoServiceProvider().ComputeHash(System.Text.Encoding.UTF8.GetBytes($"{this.devID}{method}{this.authKey}{this.timestamp}"));
