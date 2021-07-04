@@ -106,17 +106,93 @@
         /// <param name="language">Language.</param>
         /// <returns>A <see cref="Task"/> representing the asynchronous operation.</returns>
         Task<JsonDocument> GetItems(Language language = Language.English);
+
+        /// <summary>
+        /// Get player info.
+        /// </summary>
+        /// <param name="playerID">Player ID.</param>
+        /// <returns>A <see cref="Task"/> representing the asynchronous operation.</returns>
         Task<JsonDocument> GetPlayer(uint playerID);
+
+        /// <summary>
+        /// Get a player's champion ranks.
+        /// </summary>
+        /// <param name="playerID">Player ID.</param>
+        /// <returns>A <see cref="Task"/> representing the asynchronous operation.</returns>
         Task<JsonDocument> GetPlayerChampionRanks(uint playerID);
+
+        /// <summary>
+        /// Get player IDs by gamertag.
+        /// </summary>
+        /// <param name="name">Name.</param>
+        /// <param name="platform">Platform.</param>
+        /// <returns>A <see cref="Task"/> representing the asynchronous operation.</returns>
         Task<JsonDocument> GetPlayerIDByGamertag(string name, Platform platform);
+
+        /// <summary>
+        /// Get an array of players with the requested name.
+        /// </summary>
+        /// <param name="name">Name.</param>
+        /// <returns>A <see cref="Task"/> representing the asynchronous operation.</returns>
         Task<JsonDocument> GetPlayerIDByName(string name);
+
+        /// <summary>
+        /// Get a player from PC or PSN. Does not work with Xbox or Switch.
+        /// </summary>
+        /// <param name="name">Name.</param>
+        /// <param name="platform">Platform.</param>
+        /// <returns>A <see cref="Task"/> representing the asynchronous operation.</returns>
         Task<JsonDocument> GetPlayerIDByPlatformUserID(string name, Platform platform);
+
+        /// <summary>
+        /// Get player ID info for Xbox and Switch.
+        /// </summary>
+        /// <param name="name">Name.</param>
+        /// <returns>A <see cref="Task"/> representing the asynchronous operation.</returns>
         Task<JsonDocument> GetPlayerIDForXboxAndSwitch(string name);
+
+        /// <summary>
+        /// Get all the champion loadouts for the requested player.
+        /// </summary>
+        /// <param name="playerID">Player ID.</param>
+        /// <param name="language">Language.</param>
+        /// <returns>A <see cref="Task"/> representing the asynchronous operation.</returns>
         Task<JsonDocument> GetPlayerLoadouts(uint playerID, Language language);
+
+        /// <summary>
+        /// Get the match history of the requested player.
+        /// </summary>
+        /// <param name="playerID">Player ID.</param>
+        /// <returns>A <see cref="Task"/> representing the asynchronous operation.</returns>
         Task<JsonDocument> GetPlayerMatchHistory(uint playerID);
+
+        /// <summary>
+        /// Get the queue stats of a player.
+        /// </summary>
+        /// <param name="playerID">Player ID.</param>
+        /// <param name="queue">Queue.</param>
+        /// <returns>A <see cref="Task"/> representing the asynchronous operation.</returns>
         Task<JsonDocument> GetPlayerQueueStats(uint playerID, Queue queue);
+
+        /// <summary>
+        /// Get all the relationships for the requested player, includes both blocked and friends.
+        /// </summary>
+        /// <param name="playerID">Player ID.</param>
+        /// <returns>A <see cref="Task"/> representing the asynchronous operation.</returns>
         Task<JsonDocument> GetPlayerRelationships(uint playerID);
+
+        /// <summary>
+        /// Get multiple players.
+        /// </summary>
+        /// <param name="playerIDs">Player IDs.</param>
+        /// <returns>A <see cref="Task"/> representing the asynchronous operation.</returns>
         Task<JsonDocument> GetPlayers(uint[] playerIDs);
+
+        /// <summary>
+        /// Get the current status of the player.
+        /// </summary>
+        /// <param name="playerID">Player ID.</param>
+        /// <returns>A <see cref="Task"/> representing the asynchronous operation.</returns>
         Task<JsonDocument> GetPlayerStatus(uint playerID);
 
         /// <summary>

@@ -28,8 +28,8 @@
         /// <param name="devId">Developer ID.</param>
         /// <param name="authKey">Authorization key.</param>
         /// <param name="timestamp">Timestamp to use.</param>
-        /// <param name="apiUrl">API URL to </param>
-        /// <param name="debugMode">Adds </param>
+        /// <param name="apiUrl">API URL to use for building URLs.</param>
+        /// <param name="debugMode">Adds debugging where applicable.</param>
         public JsonApi(string devId, string authKey, string timestamp, string apiUrl, bool debugMode = false)
         {
             this.devID = devId;
