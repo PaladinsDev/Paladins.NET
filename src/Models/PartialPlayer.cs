@@ -1,5 +1,7 @@
 ﻿namespace Paladins.Net.Models
 {
+    using Paladins.Net.Enumerations;
+
     /// <summary>
     /// Partial player.
     /// </summary>
