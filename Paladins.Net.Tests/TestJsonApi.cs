@@ -10,15 +10,37 @@
     /// <summary>
     /// JSON API class tests.
     /// </summary>
-    public class TestJsonApi
+    public class TestJsonApi : IClassFixture<ApiFixture>
     {
         /// <summary>
-        /// 
+        /// ApiFixture.
+        /// </summary>
+        private readonly ApiFixture apiFixture;
+
+        /// <summary>
+        /// Output.
+        /// </summary>
+        private readonly ITestOutputHelper output;
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="TestJsonApi"/> class.
+        /// </summary>
+        /// <param name="apiFixture">ApiFixture.</param>
+        /// <param name="output">Output.</param>
+        public TestJsonApi(ApiFixture apiFixture, ITestOutputHelper output)
+        {
+            this.apiFixture = apiFixture;
+            this.output = output;
+        }
+
+        /// <summary>
+        /// Test create session.
         /// </summary>
         [Fact]
         public void TestCreateSession()
         {
-            // Method intentionally left empty.
+            this.output.WriteLine(this.apiFixture.Auth.AUTH_KEY);
+            Assert.True(true);
         }
     }
 }
