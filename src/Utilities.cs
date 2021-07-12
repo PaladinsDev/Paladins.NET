@@ -4,8 +4,16 @@ namespace Paladins.Net
 {
     public static class Utilities
     {
+        /// <summary>
+        /// The default API URL.
+        /// </summary>
+#pragma warning disable S1075 // URIs should not be hardcoded
+        public static readonly string DefaultApiUrl = "https://api.paladins.com/paladinsapi.svc";
+#pragma warning restore S1075 // URIs should not be hardcoded
+
         // TODO: GetChampion method
         // TODO: Create/Make web request
+
         public static Platform ParsePlatform(string platform)
         {
             switch (platform.ToLower())

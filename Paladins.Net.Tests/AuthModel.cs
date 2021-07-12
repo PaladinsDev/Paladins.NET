@@ -15,5 +15,9 @@
         /// </summary>
         public string DEV_ID { get; set; }
 
+        /// <summary>
+        /// Gets or sets session key.
+        /// </summary>
+        public string SESSION_KEY { get; set; }
     }
 }
